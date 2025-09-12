@@ -5,55 +5,46 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0' # Proje başlangıç sürümüne göre güncellenebilir
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.6 # iOS için ikonlar
-  google_fonts: ^6.1.0 # Font seçimi
-  flutter_bloc: ^8.1.3 # BLoC/Cubit durum yönetimi
-  bloc: ^8.1.2 # BLoC/Cubit temel paketi
-  go_router: ^13.0.1 # Navigasyon yönetimi
-  drift: ^2.13.0 # SQLite için ORM (Veritabanı)
-  sqlite3_flutter_libs: ^0.5.20 # SQLite motoru Flutter için
-  path_provider: ^2.1.1 # Dosya sistemi yolları
-  path: ^1.8.3 # Yol işlemleri
-  firebase_core: ^2.24.2 # Firebase'i başlatmak için
-  firebase_auth: ^4.15.3 # Firebase kimlik doğrulama
-  cloud_firestore: ^4.13.5 # Firebase Firestore veritabanı
-  lottie: 3.3.1 # Lottie animasyonları
+  cupertino_icons: ^1.0.6
+  google_fonts: ^6.1.0
+  flutter_bloc: ^8.1.3
+  bloc: ^8.1.2
+  go_router: ^13.0.1
+  drift: ^2.13.0
+  path_provider: ^2.1.1
+  path: ^1.8.3
+  firebase_core: ^2.32.0
+  firebase_auth: ^4.16.0
+  cloud_firestore: ^4.17.5
+  lottie: 3.3.1
+  firebase_analytics: ^10.10.7
+  flutterfire_cli: ^1.3.1
+  equatable: ^2.0.7
+
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.1
-  drift_dev: ^2.13.0 # Drift kod üretimi için
-  build_runner: ^2.4.7 # Kod üreticiyi çalıştırmak için
+  drift_dev: ^2.13.0
+  build_runner: ^2.4.7
 
 flutter:
   uses-material-design: true
 
   assets:
-    # Karakterler (statik ve animasyonlu)
-    - assets/app_characters/static/
-    - assets/app_characters/animated/
-
-    # FatmaSu profil fotoğrafları
+    - assets/sanrio_characters/static/
+    - assets/sanrio_characters/animated/
     - assets/images/fatmasu_profile_photos/
-
-    # Arka plan görselleri
     - assets/images/backgrounds/
-
-    # UI elemanları
     - assets/images/ui_elements/
-
-    # Ödül görselleri
     - assets/images/rewards/
-
-    # Özel ikonlar
     - assets/icons/custom/
-
-    # Lottie Animasyonları
     - assets/lottie_animations/

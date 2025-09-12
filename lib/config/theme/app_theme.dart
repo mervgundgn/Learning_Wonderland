@@ -1,60 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:learning_wonderland/config/theme/app_colors.dart';
-import 'package:learning_wonderland/config/theme/app_text_styles.dart';
+import 'app_colors.dart';
+import 'app_text_styles.dart';
 
 class AppTheme {
-  static final ThemeData lightTheme = ThemeData (
-      scaffoldBackgroundColor: AppColors.lavenderBlush,
-      primaryColor: AppColors.primaryColor,
-
-    colorScheme: ColorScheme(
-      primary: AppColors.primaryColor,
-      onPrimary: Colors.white,
-      secondary: AppColors.secondaryColor,
-      onSecondary: Colors.white,
-      tertiary: AppColors.accentYellow,
-      background: AppColors.lavenderBlush,
-      onBackground: AppColors.darkGrey,
-      surface: Colors.white,
-      onSurface: AppColors.darkGrey,
-      error: Colors.redAccent,
-      onError: Colors.white,
-      brightness: Brightness.light
-    ),
-
-
-    textTheme: TextTheme(
-      headlineLarge: AppStyles.chewyTitleStyle,
-      headlineMedium: AppStyles.bubblegumSansSubtitleStyle,
-      bodyLarge: AppStyles.notoSansBodyStyle,
-      bodyMedium: AppStyles.notoSansSmallStyle,
-      titleLarge: AppStyles.notoSansHighlightStyle,
-    ),
-
+  static final ThemeData lightTheme = ThemeData(
+    primaryColor: AppColors.primaryColor,
+    scaffoldBackgroundColor: AppColors.lavenderBlush,
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.primaryColor,
-      foregroundColor: Colors.white,
-      titleTextStyle: AppStyles.bubblegumSansSubtitleStyle,
-      elevation: 0.0,
+      titleTextStyle: AppTextStyles.bubblegumSansSubtitleStyle.copyWith(color: Colors.white),
     ),
-
-    buttonTheme: ButtonThemeData(
-      buttonColor: AppColors.accentYellow,
-      textTheme: ButtonTextTheme.primary,
+    textTheme: TextTheme(
+      headlineLarge: AppTextStyles.chewyTitleStyle,
+      titleLarge: AppTextStyles.bubblegumSansSubtitleStyle,
+      bodyLarge: AppTextStyles.notoSansBodyStyle,
+      bodyMedium: AppTextStyles.notoSansSmallStyle,
+      labelLarge: AppTextStyles.notoSansHighlightStyle,
     ),
-
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor:  MaterialStateProperty.all(AppColors.accentYellow),
-          foregroundColor:  MaterialStateProperty.all(AppColors.darkGrey),
-        shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0))),
-
-      ),
-    ),
-      cardTheme: CardThemeData(
-      color: Colors.white,
-    elevation: 2.0,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-  ),
-      );
+  );
 }

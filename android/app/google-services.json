@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "843942874163",
+    "project_id": "learning-wonderland",
+    "storage_bucket": "learning-wonderland.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843942874163:android:55fe2cbc94f33ecbe2a746",
+        "android_client_info": {
+          "package_name": "com.learningwonderland.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC77kFAOlDfkpYkX0Cv9A30AnYqSykYv4Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843942874163:android:1e1d68ebca4164a0e2a746",
+        "android_client_info": {
+          "package_name": "com.learningwonderland.app.learning_wonderland"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC77kFAOlDfkpYkX0Cv9A30AnYqSykYv4Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
