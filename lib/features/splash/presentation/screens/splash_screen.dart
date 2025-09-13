@@ -1,9 +1,10 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:learning_wonderland/config/router/app_router.dart';
 import 'package:learning_wonderland/config/theme/app_colors.dart';
 import 'package:learning_wonderland/config/theme/app_text_styles.dart';
-import 'package:learning_wonderland/config/router/app_router.dart';
-import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     _timer = Timer(const Duration(seconds: 3), () {
-      GoRouter.of(context).goNamed(AppRouteName.home);
+      if (mounted) GoRouter.of(context).goNamed(AppRouteName.home);
     });
   }
 
@@ -32,15 +33,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.lavenderBlush,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              "Learning Wonderland",
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
-            const SizedBox(height: 20.0),
+            Text("Learning Wonderland", style: AppTextStyles.chewyTitleStyle),
+            const SizedBox(height: 20),
             const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
             ),

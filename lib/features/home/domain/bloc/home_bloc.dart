@@ -1,7 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../repositories/i_home_repository.dart';
 import 'home_event.dart';
 import 'home_state.dart';
-import '../repositories/i_home_repository.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final IHomeRepository homeRepository;

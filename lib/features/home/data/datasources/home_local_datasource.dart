@@ -1,8 +1,6 @@
-import 'package:learning_wonderland/data/app_database.dart';
-import 'package:learning_wonderland/features/home/domain/repositories/i_home_repository.dart';
-import 'package:drift/drift.dart';
 import 'dart:async';
-
+import 'package:learning_wonderland/data/local/app_database.dart';
+import 'package:drift/drift.dart';
 
 abstract class IHomeLocalDataSource {
   Future<dynamic> getMapData();
@@ -20,26 +18,21 @@ class HomeLocalDataSourceImpl implements IHomeLocalDataSource {
   Future<dynamic> getMapData() async {
     final lessons = await appDatabase.select(appDatabase.lessons).get();
     if (lessons.isNotEmpty) {
-      return {
-        'mapImageUrl': 'assets/images/backgrounds/bacground_map.png'
-      };
+      return {'mapImageUrl': 'assets/images/backgrounds/bacground_map.png'};
     }
     return {};
   }
 
   @override
   Future<List<dynamic>> getLessonModules() async {
-    final lessons = await appDatabase.select(appDatabase.lessons).get();
-    return lessons;
+    return await appDatabase.select(appDatabase.lessons).get();
   }
 
   @override
   Future<void> updateLessonModuleStatus(int moduleId, bool isUnlocked) async {
     await (appDatabase.update(appDatabase.lessons)
       ..where((tbl) => tbl.id.equals(moduleId)))
-        .write(LessonsCompanion(
-      isUnlocked: Value(isUnlocked),
-    ));
+        .write(LessonsCompanion(isUnlocked: Value(isUnlocked)));
   }
 
   @override
