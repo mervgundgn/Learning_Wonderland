@@ -1,3 +1,4 @@
+import 'package:learning_wonderland/data/local/app_database.dart';
 import 'package:learning_wonderland/features/home/data/datasources/home_local_datasource.dart';
 import 'package:learning_wonderland/features/home/domain/repositories/i_home_repository.dart';
 
@@ -17,7 +18,7 @@ class HomeRepositoryImpl implements IHomeRepository {
   }
 
   @override
-  Future<List<dynamic>> getLessonModules() async {
+  Future<List<Lesson>> getLessonModules() async {
     return await localDataSource.getLessonModules();
   }
 

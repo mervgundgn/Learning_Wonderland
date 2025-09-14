@@ -4,7 +4,7 @@ import 'package:drift/drift.dart';
 
 abstract class IHomeLocalDataSource {
   Future<dynamic> getMapData();
-  Future<List<dynamic>> getLessonModules();
+  Future<List<Lesson>> getLessonModules();
   Future<void> updateLessonModuleStatus(int moduleId, bool isUnlocked);
   Future<void> updateGameLevelProgress(int levelId, int score, bool isCompleted);
 }
@@ -24,7 +24,7 @@ class HomeLocalDataSourceImpl implements IHomeLocalDataSource {
   }
 
   @override
-  Future<List<dynamic>> getLessonModules() async {
+  Future<List<Lesson>> getLessonModules() async {
     return await appDatabase.select(appDatabase.lessons).get();
   }
 

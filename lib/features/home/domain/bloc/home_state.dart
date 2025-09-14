@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:learning_wonderland/data/local/app_database.dart';
 
 abstract class HomeState extends Equatable {
   @override
@@ -11,7 +12,7 @@ class HomeLoading extends HomeState {}
 
 class HomeLoaded extends HomeState {
   final dynamic mapData;
-  final List<dynamic> lessonModules;
+  final List<Lesson> lessonModules;
 
   HomeLoaded({required this.mapData, required this.lessonModules});
 

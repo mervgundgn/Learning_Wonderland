@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_wonderland/data/local/app_database.dart';
 
 import '../repositories/i_home_repository.dart';
 import 'home_event.dart';
@@ -12,7 +13,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       try {
         emit(HomeLoading());
         final mapData = await homeRepository.getMapData();
-        final lessonModules = await homeRepository.getLessonModules();
+        final List<Lesson> lessonModules = await
+            homeRepository.getLessonModules();
         emit(HomeLoaded(mapData: mapData, lessonModules: lessonModules));
       } catch (e) {
         emit(HomeError(message: e.toString()));

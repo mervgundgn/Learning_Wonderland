@@ -6,7 +6,7 @@ import 'package:path/path.dart' as p;
 
 part 'app_database.g.dart';
 
-// Users Table
+
 class Users extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().withLength(min: 1, max: 50).named('user_name')();
@@ -17,7 +17,6 @@ class Users extends Table {
   DateTimeColumn get lastLogin => dateTime().nullable()();
 }
 
-// Lessons Table
 class Lessons extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get characterId => text().withLength(min: 3, max: 20)();
@@ -29,7 +28,6 @@ class Lessons extends Table {
   DateTimeColumn get lastAccessed => dateTime().nullable()();
 }
 
-// GameLevels Table
 class GameLevels extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get lessonId => integer().references(Lessons, #id)();
@@ -40,7 +38,7 @@ class GameLevels extends Table {
   DateTimeColumn get lastPlayed => dateTime().nullable()();
 }
 
-// Words Table
+
 class Words extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get wordText => text().withLength(min: 1, max: 50).unique()();
@@ -51,7 +49,7 @@ class Words extends Table {
   DateTimeColumn get lastReviewed => dateTime().nullable()();
 }
 
-// ParentTasks Table
+
 class ParentTasks extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get title => text().withLength(min: 5, max: 100)();
@@ -61,7 +59,7 @@ class ParentTasks extends Table {
   TextColumn get assignedByUserId => text().nullable()();
 }
 
-// LazyDatabase bağlantısı
+
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
@@ -76,4 +74,57 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   int get schemaVersion => 1;
+
+  Future<void> addInitialLessonData() async {
+    final lessonCount =
+    await (select(lessons).get()).then((value) => value.length);
+
+    if (lessonCount == 0) {
+      await batch((batch) {
+        batch.insertAll(lessons, [
+          LessonsCompanion.insert(
+            characterId: 'HelloKitty',
+            title: 'Harfleri Tanıyalım',
+            description:
+            const Value('Sesli harfleri öğrenme modülü.'),
+
+            difficultyLevel: const Value(1),
+            isUnlocked: const Value(true),
+          ),
+          LessonsCompanion.insert(
+            characterId: 'Cinnamoroll',
+            title: 'Kelime Avı',
+            description:
+            const Value('Basit kelimeler oluşturma pratiği.'),
+            difficultyLevel: const Value(1),
+            isUnlocked: const Value(false),
+          ),
+          LessonsCompanion.insert(
+            characterId: 'Kuromi',
+            title: 'Cümle Kurma',
+            description:
+            const Value('Kısa cümleler kurma alıştırması.'),
+            difficultyLevel: const Value(2),
+            isUnlocked: const Value(false),
+          ),
+          LessonsCompanion.insert(
+            characterId: 'MyMelody',
+            title: 'Heceleme Oyunu',
+            description:
+            const Value('Kelime heceleme alıştırması.'),
+            difficultyLevel: const Value(1),
+            isUnlocked: const Value(false),
+          ),
+          LessonsCompanion.insert(
+            characterId: 'Pompompurin',
+            title: 'Okuduğunu Anlama',
+            description:
+            const Value('Basit hikayeleri anlama pratiği.'),
+            difficultyLevel: const Value(2),
+            isUnlocked: const Value(false),
+          ),
+        ]);
+      });
+    }
+  }
 }
