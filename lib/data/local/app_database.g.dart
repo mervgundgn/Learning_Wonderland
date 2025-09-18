@@ -1014,12 +1014,12 @@ class LessonsCompanion extends UpdateCompanion<Lesson> {
   }
 }
 
-class $GameLevelsTable extends GameLevels
-    with TableInfo<$GameLevelsTable, GameLevel> {
+class $GameTypesTable extends GameTypes
+    with TableInfo<$GameTypesTable, GameType> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $GameLevelsTable(this.attachedDatabase, [this._alias]);
+  $GameTypesTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -1045,6 +1045,418 @@ class $GameLevelsTable extends GameLevels
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'REFERENCES lessons (id)',
+    ),
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 3,
+      maxTextLength: 100,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _iconPathMeta = const VerificationMeta(
+    'iconPath',
+  );
+  @override
+  late final GeneratedColumn<String> iconPath = GeneratedColumn<String>(
+    'icon_path',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orderIndexMeta = const VerificationMeta(
+    'orderIndex',
+  );
+  @override
+  late final GeneratedColumn<int> orderIndex = GeneratedColumn<int>(
+    'order_index',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    lessonId,
+    name,
+    description,
+    iconPath,
+    orderIndex,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'game_types';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<GameType> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('lesson_id')) {
+      context.handle(
+        _lessonIdMeta,
+        lessonId.isAcceptableOrUnknown(data['lesson_id']!, _lessonIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lessonIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('icon_path')) {
+      context.handle(
+        _iconPathMeta,
+        iconPath.isAcceptableOrUnknown(data['icon_path']!, _iconPathMeta),
+      );
+    }
+    if (data.containsKey('order_index')) {
+      context.handle(
+        _orderIndexMeta,
+        orderIndex.isAcceptableOrUnknown(data['order_index']!, _orderIndexMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  GameType map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GameType(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      lessonId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}lesson_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      iconPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}icon_path'],
+      ),
+      orderIndex: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}order_index'],
+      )!,
+    );
+  }
+
+  @override
+  $GameTypesTable createAlias(String alias) {
+    return $GameTypesTable(attachedDatabase, alias);
+  }
+}
+
+class GameType extends DataClass implements Insertable<GameType> {
+  final int id;
+  final int lessonId;
+  final String name;
+  final String? description;
+  final String? iconPath;
+  final int orderIndex;
+  const GameType({
+    required this.id,
+    required this.lessonId,
+    required this.name,
+    this.description,
+    this.iconPath,
+    required this.orderIndex,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['lesson_id'] = Variable<int>(lessonId);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || iconPath != null) {
+      map['icon_path'] = Variable<String>(iconPath);
+    }
+    map['order_index'] = Variable<int>(orderIndex);
+    return map;
+  }
+
+  GameTypesCompanion toCompanion(bool nullToAbsent) {
+    return GameTypesCompanion(
+      id: Value(id),
+      lessonId: Value(lessonId),
+      name: Value(name),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      iconPath: iconPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(iconPath),
+      orderIndex: Value(orderIndex),
+    );
+  }
+
+  factory GameType.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return GameType(
+      id: serializer.fromJson<int>(json['id']),
+      lessonId: serializer.fromJson<int>(json['lessonId']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String?>(json['description']),
+      iconPath: serializer.fromJson<String?>(json['iconPath']),
+      orderIndex: serializer.fromJson<int>(json['orderIndex']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'lessonId': serializer.toJson<int>(lessonId),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String?>(description),
+      'iconPath': serializer.toJson<String?>(iconPath),
+      'orderIndex': serializer.toJson<int>(orderIndex),
+    };
+  }
+
+  GameType copyWith({
+    int? id,
+    int? lessonId,
+    String? name,
+    Value<String?> description = const Value.absent(),
+    Value<String?> iconPath = const Value.absent(),
+    int? orderIndex,
+  }) => GameType(
+    id: id ?? this.id,
+    lessonId: lessonId ?? this.lessonId,
+    name: name ?? this.name,
+    description: description.present ? description.value : this.description,
+    iconPath: iconPath.present ? iconPath.value : this.iconPath,
+    orderIndex: orderIndex ?? this.orderIndex,
+  );
+  GameType copyWithCompanion(GameTypesCompanion data) {
+    return GameType(
+      id: data.id.present ? data.id.value : this.id,
+      lessonId: data.lessonId.present ? data.lessonId.value : this.lessonId,
+      name: data.name.present ? data.name.value : this.name,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      iconPath: data.iconPath.present ? data.iconPath.value : this.iconPath,
+      orderIndex: data.orderIndex.present
+          ? data.orderIndex.value
+          : this.orderIndex,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GameType(')
+          ..write('id: $id, ')
+          ..write('lessonId: $lessonId, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('iconPath: $iconPath, ')
+          ..write('orderIndex: $orderIndex')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, lessonId, name, description, iconPath, orderIndex);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GameType &&
+          other.id == this.id &&
+          other.lessonId == this.lessonId &&
+          other.name == this.name &&
+          other.description == this.description &&
+          other.iconPath == this.iconPath &&
+          other.orderIndex == this.orderIndex);
+}
+
+class GameTypesCompanion extends UpdateCompanion<GameType> {
+  final Value<int> id;
+  final Value<int> lessonId;
+  final Value<String> name;
+  final Value<String?> description;
+  final Value<String?> iconPath;
+  final Value<int> orderIndex;
+  const GameTypesCompanion({
+    this.id = const Value.absent(),
+    this.lessonId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+    this.iconPath = const Value.absent(),
+    this.orderIndex = const Value.absent(),
+  });
+  GameTypesCompanion.insert({
+    this.id = const Value.absent(),
+    required int lessonId,
+    required String name,
+    this.description = const Value.absent(),
+    this.iconPath = const Value.absent(),
+    this.orderIndex = const Value.absent(),
+  }) : lessonId = Value(lessonId),
+       name = Value(name);
+  static Insertable<GameType> custom({
+    Expression<int>? id,
+    Expression<int>? lessonId,
+    Expression<String>? name,
+    Expression<String>? description,
+    Expression<String>? iconPath,
+    Expression<int>? orderIndex,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (lessonId != null) 'lesson_id': lessonId,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (iconPath != null) 'icon_path': iconPath,
+      if (orderIndex != null) 'order_index': orderIndex,
+    });
+  }
+
+  GameTypesCompanion copyWith({
+    Value<int>? id,
+    Value<int>? lessonId,
+    Value<String>? name,
+    Value<String?>? description,
+    Value<String?>? iconPath,
+    Value<int>? orderIndex,
+  }) {
+    return GameTypesCompanion(
+      id: id ?? this.id,
+      lessonId: lessonId ?? this.lessonId,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      iconPath: iconPath ?? this.iconPath,
+      orderIndex: orderIndex ?? this.orderIndex,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (lessonId.present) {
+      map['lesson_id'] = Variable<int>(lessonId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (iconPath.present) {
+      map['icon_path'] = Variable<String>(iconPath.value);
+    }
+    if (orderIndex.present) {
+      map['order_index'] = Variable<int>(orderIndex.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GameTypesCompanion(')
+          ..write('id: $id, ')
+          ..write('lessonId: $lessonId, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('iconPath: $iconPath, ')
+          ..write('orderIndex: $orderIndex')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GameLevelsTable extends GameLevels
+    with TableInfo<$GameLevelsTable, GameLevel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GameLevelsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _gameTypeIdMeta = const VerificationMeta(
+    'gameTypeId',
+  );
+  @override
+  late final GeneratedColumn<int> gameTypeId = GeneratedColumn<int>(
+    'game_type_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES game_types (id)',
     ),
   );
   static const VerificationMeta _levelNumberMeta = const VerificationMeta(
@@ -1110,7 +1522,7 @@ class $GameLevelsTable extends GameLevels
   @override
   List<GeneratedColumn> get $columns => [
     id,
-    lessonId,
+    gameTypeId,
     levelNumber,
     isCompleted,
     score,
@@ -1132,13 +1544,16 @@ class $GameLevelsTable extends GameLevels
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('lesson_id')) {
+    if (data.containsKey('game_type_id')) {
       context.handle(
-        _lessonIdMeta,
-        lessonId.isAcceptableOrUnknown(data['lesson_id']!, _lessonIdMeta),
+        _gameTypeIdMeta,
+        gameTypeId.isAcceptableOrUnknown(
+          data['game_type_id']!,
+          _gameTypeIdMeta,
+        ),
       );
     } else if (isInserting) {
-      context.missing(_lessonIdMeta);
+      context.missing(_gameTypeIdMeta);
     }
     if (data.containsKey('level_number')) {
       context.handle(
@@ -1192,9 +1607,9 @@ class $GameLevelsTable extends GameLevels
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      lessonId: attachedDatabase.typeMapping.read(
+      gameTypeId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}lesson_id'],
+        data['${effectivePrefix}game_type_id'],
       )!,
       levelNumber: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
@@ -1227,7 +1642,7 @@ class $GameLevelsTable extends GameLevels
 
 class GameLevel extends DataClass implements Insertable<GameLevel> {
   final int id;
-  final int lessonId;
+  final int gameTypeId;
   final int levelNumber;
   final bool isCompleted;
   final int score;
@@ -1235,7 +1650,7 @@ class GameLevel extends DataClass implements Insertable<GameLevel> {
   final DateTime? lastPlayed;
   const GameLevel({
     required this.id,
-    required this.lessonId,
+    required this.gameTypeId,
     required this.levelNumber,
     required this.isCompleted,
     required this.score,
@@ -1246,7 +1661,7 @@ class GameLevel extends DataClass implements Insertable<GameLevel> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['lesson_id'] = Variable<int>(lessonId);
+    map['game_type_id'] = Variable<int>(gameTypeId);
     map['level_number'] = Variable<int>(levelNumber);
     map['is_completed'] = Variable<bool>(isCompleted);
     map['score'] = Variable<int>(score);
@@ -1260,7 +1675,7 @@ class GameLevel extends DataClass implements Insertable<GameLevel> {
   GameLevelsCompanion toCompanion(bool nullToAbsent) {
     return GameLevelsCompanion(
       id: Value(id),
-      lessonId: Value(lessonId),
+      gameTypeId: Value(gameTypeId),
       levelNumber: Value(levelNumber),
       isCompleted: Value(isCompleted),
       score: Value(score),
@@ -1278,7 +1693,7 @@ class GameLevel extends DataClass implements Insertable<GameLevel> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return GameLevel(
       id: serializer.fromJson<int>(json['id']),
-      lessonId: serializer.fromJson<int>(json['lessonId']),
+      gameTypeId: serializer.fromJson<int>(json['gameTypeId']),
       levelNumber: serializer.fromJson<int>(json['levelNumber']),
       isCompleted: serializer.fromJson<bool>(json['isCompleted']),
       score: serializer.fromJson<int>(json['score']),
@@ -1291,7 +1706,7 @@ class GameLevel extends DataClass implements Insertable<GameLevel> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'lessonId': serializer.toJson<int>(lessonId),
+      'gameTypeId': serializer.toJson<int>(gameTypeId),
       'levelNumber': serializer.toJson<int>(levelNumber),
       'isCompleted': serializer.toJson<bool>(isCompleted),
       'score': serializer.toJson<int>(score),
@@ -1302,7 +1717,7 @@ class GameLevel extends DataClass implements Insertable<GameLevel> {
 
   GameLevel copyWith({
     int? id,
-    int? lessonId,
+    int? gameTypeId,
     int? levelNumber,
     bool? isCompleted,
     int? score,
@@ -1310,7 +1725,7 @@ class GameLevel extends DataClass implements Insertable<GameLevel> {
     Value<DateTime?> lastPlayed = const Value.absent(),
   }) => GameLevel(
     id: id ?? this.id,
-    lessonId: lessonId ?? this.lessonId,
+    gameTypeId: gameTypeId ?? this.gameTypeId,
     levelNumber: levelNumber ?? this.levelNumber,
     isCompleted: isCompleted ?? this.isCompleted,
     score: score ?? this.score,
@@ -1320,7 +1735,9 @@ class GameLevel extends DataClass implements Insertable<GameLevel> {
   GameLevel copyWithCompanion(GameLevelsCompanion data) {
     return GameLevel(
       id: data.id.present ? data.id.value : this.id,
-      lessonId: data.lessonId.present ? data.lessonId.value : this.lessonId,
+      gameTypeId: data.gameTypeId.present
+          ? data.gameTypeId.value
+          : this.gameTypeId,
       levelNumber: data.levelNumber.present
           ? data.levelNumber.value
           : this.levelNumber,
@@ -1341,7 +1758,7 @@ class GameLevel extends DataClass implements Insertable<GameLevel> {
   String toString() {
     return (StringBuffer('GameLevel(')
           ..write('id: $id, ')
-          ..write('lessonId: $lessonId, ')
+          ..write('gameTypeId: $gameTypeId, ')
           ..write('levelNumber: $levelNumber, ')
           ..write('isCompleted: $isCompleted, ')
           ..write('score: $score, ')
@@ -1354,7 +1771,7 @@ class GameLevel extends DataClass implements Insertable<GameLevel> {
   @override
   int get hashCode => Object.hash(
     id,
-    lessonId,
+    gameTypeId,
     levelNumber,
     isCompleted,
     score,
@@ -1366,7 +1783,7 @@ class GameLevel extends DataClass implements Insertable<GameLevel> {
       identical(this, other) ||
       (other is GameLevel &&
           other.id == this.id &&
-          other.lessonId == this.lessonId &&
+          other.gameTypeId == this.gameTypeId &&
           other.levelNumber == this.levelNumber &&
           other.isCompleted == this.isCompleted &&
           other.score == this.score &&
@@ -1376,7 +1793,7 @@ class GameLevel extends DataClass implements Insertable<GameLevel> {
 
 class GameLevelsCompanion extends UpdateCompanion<GameLevel> {
   final Value<int> id;
-  final Value<int> lessonId;
+  final Value<int> gameTypeId;
   final Value<int> levelNumber;
   final Value<bool> isCompleted;
   final Value<int> score;
@@ -1384,7 +1801,7 @@ class GameLevelsCompanion extends UpdateCompanion<GameLevel> {
   final Value<DateTime?> lastPlayed;
   const GameLevelsCompanion({
     this.id = const Value.absent(),
-    this.lessonId = const Value.absent(),
+    this.gameTypeId = const Value.absent(),
     this.levelNumber = const Value.absent(),
     this.isCompleted = const Value.absent(),
     this.score = const Value.absent(),
@@ -1393,16 +1810,16 @@ class GameLevelsCompanion extends UpdateCompanion<GameLevel> {
   });
   GameLevelsCompanion.insert({
     this.id = const Value.absent(),
-    required int lessonId,
+    required int gameTypeId,
     this.levelNumber = const Value.absent(),
     this.isCompleted = const Value.absent(),
     this.score = const Value.absent(),
     this.starsAwarded = const Value.absent(),
     this.lastPlayed = const Value.absent(),
-  }) : lessonId = Value(lessonId);
+  }) : gameTypeId = Value(gameTypeId);
   static Insertable<GameLevel> custom({
     Expression<int>? id,
-    Expression<int>? lessonId,
+    Expression<int>? gameTypeId,
     Expression<int>? levelNumber,
     Expression<bool>? isCompleted,
     Expression<int>? score,
@@ -1411,7 +1828,7 @@ class GameLevelsCompanion extends UpdateCompanion<GameLevel> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (lessonId != null) 'lesson_id': lessonId,
+      if (gameTypeId != null) 'game_type_id': gameTypeId,
       if (levelNumber != null) 'level_number': levelNumber,
       if (isCompleted != null) 'is_completed': isCompleted,
       if (score != null) 'score': score,
@@ -1422,7 +1839,7 @@ class GameLevelsCompanion extends UpdateCompanion<GameLevel> {
 
   GameLevelsCompanion copyWith({
     Value<int>? id,
-    Value<int>? lessonId,
+    Value<int>? gameTypeId,
     Value<int>? levelNumber,
     Value<bool>? isCompleted,
     Value<int>? score,
@@ -1431,7 +1848,7 @@ class GameLevelsCompanion extends UpdateCompanion<GameLevel> {
   }) {
     return GameLevelsCompanion(
       id: id ?? this.id,
-      lessonId: lessonId ?? this.lessonId,
+      gameTypeId: gameTypeId ?? this.gameTypeId,
       levelNumber: levelNumber ?? this.levelNumber,
       isCompleted: isCompleted ?? this.isCompleted,
       score: score ?? this.score,
@@ -1446,8 +1863,8 @@ class GameLevelsCompanion extends UpdateCompanion<GameLevel> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (lessonId.present) {
-      map['lesson_id'] = Variable<int>(lessonId.value);
+    if (gameTypeId.present) {
+      map['game_type_id'] = Variable<int>(gameTypeId.value);
     }
     if (levelNumber.present) {
       map['level_number'] = Variable<int>(levelNumber.value);
@@ -1471,7 +1888,7 @@ class GameLevelsCompanion extends UpdateCompanion<GameLevel> {
   String toString() {
     return (StringBuffer('GameLevelsCompanion(')
           ..write('id: $id, ')
-          ..write('lessonId: $lessonId, ')
+          ..write('gameTypeId: $gameTypeId, ')
           ..write('levelNumber: $levelNumber, ')
           ..write('isCompleted: $isCompleted, ')
           ..write('score: $score, ')
@@ -2388,6 +2805,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $UsersTable users = $UsersTable(this);
   late final $LessonsTable lessons = $LessonsTable(this);
+  late final $GameTypesTable gameTypes = $GameTypesTable(this);
   late final $GameLevelsTable gameLevels = $GameLevelsTable(this);
   late final $WordsTable words = $WordsTable(this);
   late final $ParentTasksTable parentTasks = $ParentTasksTable(this);
@@ -2398,6 +2816,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     users,
     lessons,
+    gameTypes,
     gameLevels,
     words,
     parentTasks,
@@ -2664,19 +3083,19 @@ final class $$LessonsTableReferences
     extends BaseReferences<_$AppDatabase, $LessonsTable, Lesson> {
   $$LessonsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static MultiTypedResultKey<$GameLevelsTable, List<GameLevel>>
-  _gameLevelsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.gameLevels,
-    aliasName: $_aliasNameGenerator(db.lessons.id, db.gameLevels.lessonId),
+  static MultiTypedResultKey<$GameTypesTable, List<GameType>>
+  _gameTypesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.gameTypes,
+    aliasName: $_aliasNameGenerator(db.lessons.id, db.gameTypes.lessonId),
   );
 
-  $$GameLevelsTableProcessedTableManager get gameLevelsRefs {
-    final manager = $$GameLevelsTableTableManager(
+  $$GameTypesTableProcessedTableManager get gameTypesRefs {
+    final manager = $$GameTypesTableTableManager(
       $_db,
-      $_db.gameLevels,
+      $_db.gameTypes,
     ).filter((f) => f.lessonId.id.sqlEquals($_itemColumn<int>('id')!));
 
-    final cache = $_typedResult.readTableOrNull(_gameLevelsRefsTable($_db));
+    final cache = $_typedResult.readTableOrNull(_gameTypesRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -2732,22 +3151,22 @@ class $$LessonsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  Expression<bool> gameLevelsRefs(
-    Expression<bool> Function($$GameLevelsTableFilterComposer f) f,
+  Expression<bool> gameTypesRefs(
+    Expression<bool> Function($$GameTypesTableFilterComposer f) f,
   ) {
-    final $$GameLevelsTableFilterComposer composer = $composerBuilder(
+    final $$GameTypesTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.id,
-      referencedTable: $db.gameLevels,
+      referencedTable: $db.gameTypes,
       getReferencedColumn: (t) => t.lessonId,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$GameLevelsTableFilterComposer(
+          }) => $$GameTypesTableFilterComposer(
             $db: $db,
-            $table: $db.gameLevels,
+            $table: $db.gameTypes,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -2853,22 +3272,22 @@ class $$LessonsTableAnnotationComposer
     builder: (column) => column,
   );
 
-  Expression<T> gameLevelsRefs<T extends Object>(
-    Expression<T> Function($$GameLevelsTableAnnotationComposer a) f,
+  Expression<T> gameTypesRefs<T extends Object>(
+    Expression<T> Function($$GameTypesTableAnnotationComposer a) f,
   ) {
-    final $$GameLevelsTableAnnotationComposer composer = $composerBuilder(
+    final $$GameTypesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.id,
-      referencedTable: $db.gameLevels,
+      referencedTable: $db.gameTypes,
       getReferencedColumn: (t) => t.lessonId,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$GameLevelsTableAnnotationComposer(
+          }) => $$GameTypesTableAnnotationComposer(
             $db: $db,
-            $table: $db.gameLevels,
+            $table: $db.gameTypes,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -2892,7 +3311,7 @@ class $$LessonsTableTableManager
           $$LessonsTableUpdateCompanionBuilder,
           (Lesson, $$LessonsTableReferences),
           Lesson,
-          PrefetchHooks Function({bool gameLevelsRefs})
+          PrefetchHooks Function({bool gameTypesRefs})
         > {
   $$LessonsTableTableManager(_$AppDatabase db, $LessonsTable table)
     : super(
@@ -2953,23 +3372,20 @@ class $$LessonsTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({gameLevelsRefs = false}) {
+          prefetchHooksCallback: ({gameTypesRefs = false}) {
             return PrefetchHooks(
               db: db,
-              explicitlyWatchedTables: [if (gameLevelsRefs) db.gameLevels],
+              explicitlyWatchedTables: [if (gameTypesRefs) db.gameTypes],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
                 return [
-                  if (gameLevelsRefs)
-                    await $_getPrefetchedData<Lesson, $LessonsTable, GameLevel>(
+                  if (gameTypesRefs)
+                    await $_getPrefetchedData<Lesson, $LessonsTable, GameType>(
                       currentTable: table,
                       referencedTable: $$LessonsTableReferences
-                          ._gameLevelsRefsTable(db),
-                      managerFromTypedResult: (p0) => $$LessonsTableReferences(
-                        db,
-                        table,
-                        p0,
-                      ).gameLevelsRefs,
+                          ._gameTypesRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$LessonsTableReferences(db, table, p0).gameTypesRefs,
                       referencedItemsForCurrentItem: (item, referencedItems) =>
                           referencedItems.where((e) => e.lessonId == item.id),
                       typedResults: items,
@@ -2994,12 +3410,434 @@ typedef $$LessonsTableProcessedTableManager =
       $$LessonsTableUpdateCompanionBuilder,
       (Lesson, $$LessonsTableReferences),
       Lesson,
-      PrefetchHooks Function({bool gameLevelsRefs})
+      PrefetchHooks Function({bool gameTypesRefs})
+    >;
+typedef $$GameTypesTableCreateCompanionBuilder =
+    GameTypesCompanion Function({
+      Value<int> id,
+      required int lessonId,
+      required String name,
+      Value<String?> description,
+      Value<String?> iconPath,
+      Value<int> orderIndex,
+    });
+typedef $$GameTypesTableUpdateCompanionBuilder =
+    GameTypesCompanion Function({
+      Value<int> id,
+      Value<int> lessonId,
+      Value<String> name,
+      Value<String?> description,
+      Value<String?> iconPath,
+      Value<int> orderIndex,
+    });
+
+final class $$GameTypesTableReferences
+    extends BaseReferences<_$AppDatabase, $GameTypesTable, GameType> {
+  $$GameTypesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $LessonsTable _lessonIdTable(_$AppDatabase db) => db.lessons
+      .createAlias($_aliasNameGenerator(db.gameTypes.lessonId, db.lessons.id));
+
+  $$LessonsTableProcessedTableManager get lessonId {
+    final $_column = $_itemColumn<int>('lesson_id')!;
+
+    final manager = $$LessonsTableTableManager(
+      $_db,
+      $_db.lessons,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_lessonIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$GameLevelsTable, List<GameLevel>>
+  _gameLevelsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.gameLevels,
+    aliasName: $_aliasNameGenerator(db.gameTypes.id, db.gameLevels.gameTypeId),
+  );
+
+  $$GameLevelsTableProcessedTableManager get gameLevelsRefs {
+    final manager = $$GameLevelsTableTableManager(
+      $_db,
+      $_db.gameLevels,
+    ).filter((f) => f.gameTypeId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_gameLevelsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$GameTypesTableFilterComposer
+    extends Composer<_$AppDatabase, $GameTypesTable> {
+  $$GameTypesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get iconPath => $composableBuilder(
+    column: $table.iconPath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get orderIndex => $composableBuilder(
+    column: $table.orderIndex,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$LessonsTableFilterComposer get lessonId {
+    final $$LessonsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.lessonId,
+      referencedTable: $db.lessons,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$LessonsTableFilterComposer(
+            $db: $db,
+            $table: $db.lessons,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> gameLevelsRefs(
+    Expression<bool> Function($$GameLevelsTableFilterComposer f) f,
+  ) {
+    final $$GameLevelsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.gameLevels,
+      getReferencedColumn: (t) => t.gameTypeId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GameLevelsTableFilterComposer(
+            $db: $db,
+            $table: $db.gameLevels,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$GameTypesTableOrderingComposer
+    extends Composer<_$AppDatabase, $GameTypesTable> {
+  $$GameTypesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get iconPath => $composableBuilder(
+    column: $table.iconPath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get orderIndex => $composableBuilder(
+    column: $table.orderIndex,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$LessonsTableOrderingComposer get lessonId {
+    final $$LessonsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.lessonId,
+      referencedTable: $db.lessons,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$LessonsTableOrderingComposer(
+            $db: $db,
+            $table: $db.lessons,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$GameTypesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $GameTypesTable> {
+  $$GameTypesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get iconPath =>
+      $composableBuilder(column: $table.iconPath, builder: (column) => column);
+
+  GeneratedColumn<int> get orderIndex => $composableBuilder(
+    column: $table.orderIndex,
+    builder: (column) => column,
+  );
+
+  $$LessonsTableAnnotationComposer get lessonId {
+    final $$LessonsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.lessonId,
+      referencedTable: $db.lessons,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$LessonsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.lessons,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> gameLevelsRefs<T extends Object>(
+    Expression<T> Function($$GameLevelsTableAnnotationComposer a) f,
+  ) {
+    final $$GameLevelsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.gameLevels,
+      getReferencedColumn: (t) => t.gameTypeId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GameLevelsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.gameLevels,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$GameTypesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $GameTypesTable,
+          GameType,
+          $$GameTypesTableFilterComposer,
+          $$GameTypesTableOrderingComposer,
+          $$GameTypesTableAnnotationComposer,
+          $$GameTypesTableCreateCompanionBuilder,
+          $$GameTypesTableUpdateCompanionBuilder,
+          (GameType, $$GameTypesTableReferences),
+          GameType,
+          PrefetchHooks Function({bool lessonId, bool gameLevelsRefs})
+        > {
+  $$GameTypesTableTableManager(_$AppDatabase db, $GameTypesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$GameTypesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$GameTypesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$GameTypesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> lessonId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<String?> iconPath = const Value.absent(),
+                Value<int> orderIndex = const Value.absent(),
+              }) => GameTypesCompanion(
+                id: id,
+                lessonId: lessonId,
+                name: name,
+                description: description,
+                iconPath: iconPath,
+                orderIndex: orderIndex,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int lessonId,
+                required String name,
+                Value<String?> description = const Value.absent(),
+                Value<String?> iconPath = const Value.absent(),
+                Value<int> orderIndex = const Value.absent(),
+              }) => GameTypesCompanion.insert(
+                id: id,
+                lessonId: lessonId,
+                name: name,
+                description: description,
+                iconPath: iconPath,
+                orderIndex: orderIndex,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$GameTypesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({lessonId = false, gameLevelsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (gameLevelsRefs) db.gameLevels],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (lessonId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.lessonId,
+                                referencedTable: $$GameTypesTableReferences
+                                    ._lessonIdTable(db),
+                                referencedColumn: $$GameTypesTableReferences
+                                    ._lessonIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (gameLevelsRefs)
+                    await $_getPrefetchedData<
+                      GameType,
+                      $GameTypesTable,
+                      GameLevel
+                    >(
+                      currentTable: table,
+                      referencedTable: $$GameTypesTableReferences
+                          ._gameLevelsRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$GameTypesTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).gameLevelsRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.gameTypeId == item.id),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$GameTypesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $GameTypesTable,
+      GameType,
+      $$GameTypesTableFilterComposer,
+      $$GameTypesTableOrderingComposer,
+      $$GameTypesTableAnnotationComposer,
+      $$GameTypesTableCreateCompanionBuilder,
+      $$GameTypesTableUpdateCompanionBuilder,
+      (GameType, $$GameTypesTableReferences),
+      GameType,
+      PrefetchHooks Function({bool lessonId, bool gameLevelsRefs})
     >;
 typedef $$GameLevelsTableCreateCompanionBuilder =
     GameLevelsCompanion Function({
       Value<int> id,
-      required int lessonId,
+      required int gameTypeId,
       Value<int> levelNumber,
       Value<bool> isCompleted,
       Value<int> score,
@@ -3009,7 +3847,7 @@ typedef $$GameLevelsTableCreateCompanionBuilder =
 typedef $$GameLevelsTableUpdateCompanionBuilder =
     GameLevelsCompanion Function({
       Value<int> id,
-      Value<int> lessonId,
+      Value<int> gameTypeId,
       Value<int> levelNumber,
       Value<bool> isCompleted,
       Value<int> score,
@@ -3021,17 +3859,19 @@ final class $$GameLevelsTableReferences
     extends BaseReferences<_$AppDatabase, $GameLevelsTable, GameLevel> {
   $$GameLevelsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static $LessonsTable _lessonIdTable(_$AppDatabase db) => db.lessons
-      .createAlias($_aliasNameGenerator(db.gameLevels.lessonId, db.lessons.id));
+  static $GameTypesTable _gameTypeIdTable(_$AppDatabase db) =>
+      db.gameTypes.createAlias(
+        $_aliasNameGenerator(db.gameLevels.gameTypeId, db.gameTypes.id),
+      );
 
-  $$LessonsTableProcessedTableManager get lessonId {
-    final $_column = $_itemColumn<int>('lesson_id')!;
+  $$GameTypesTableProcessedTableManager get gameTypeId {
+    final $_column = $_itemColumn<int>('game_type_id')!;
 
-    final manager = $$LessonsTableTableManager(
+    final manager = $$GameTypesTableTableManager(
       $_db,
-      $_db.lessons,
+      $_db.gameTypes,
     ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_lessonIdTable($_db));
+    final item = $_typedResult.readTableOrNull(_gameTypeIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
@@ -3078,20 +3918,20 @@ class $$GameLevelsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  $$LessonsTableFilterComposer get lessonId {
-    final $$LessonsTableFilterComposer composer = $composerBuilder(
+  $$GameTypesTableFilterComposer get gameTypeId {
+    final $$GameTypesTableFilterComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.lessonId,
-      referencedTable: $db.lessons,
+      getCurrentColumn: (t) => t.gameTypeId,
+      referencedTable: $db.gameTypes,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$LessonsTableFilterComposer(
+          }) => $$GameTypesTableFilterComposer(
             $db: $db,
-            $table: $db.lessons,
+            $table: $db.gameTypes,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -3141,20 +3981,20 @@ class $$GameLevelsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  $$LessonsTableOrderingComposer get lessonId {
-    final $$LessonsTableOrderingComposer composer = $composerBuilder(
+  $$GameTypesTableOrderingComposer get gameTypeId {
+    final $$GameTypesTableOrderingComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.lessonId,
-      referencedTable: $db.lessons,
+      getCurrentColumn: (t) => t.gameTypeId,
+      referencedTable: $db.gameTypes,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$LessonsTableOrderingComposer(
+          }) => $$GameTypesTableOrderingComposer(
             $db: $db,
-            $table: $db.lessons,
+            $table: $db.gameTypes,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -3200,20 +4040,20 @@ class $$GameLevelsTableAnnotationComposer
     builder: (column) => column,
   );
 
-  $$LessonsTableAnnotationComposer get lessonId {
-    final $$LessonsTableAnnotationComposer composer = $composerBuilder(
+  $$GameTypesTableAnnotationComposer get gameTypeId {
+    final $$GameTypesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.lessonId,
-      referencedTable: $db.lessons,
+      getCurrentColumn: (t) => t.gameTypeId,
+      referencedTable: $db.gameTypes,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$LessonsTableAnnotationComposer(
+          }) => $$GameTypesTableAnnotationComposer(
             $db: $db,
-            $table: $db.lessons,
+            $table: $db.gameTypes,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -3237,7 +4077,7 @@ class $$GameLevelsTableTableManager
           $$GameLevelsTableUpdateCompanionBuilder,
           (GameLevel, $$GameLevelsTableReferences),
           GameLevel,
-          PrefetchHooks Function({bool lessonId})
+          PrefetchHooks Function({bool gameTypeId})
         > {
   $$GameLevelsTableTableManager(_$AppDatabase db, $GameLevelsTable table)
     : super(
@@ -3253,7 +4093,7 @@ class $$GameLevelsTableTableManager
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
-                Value<int> lessonId = const Value.absent(),
+                Value<int> gameTypeId = const Value.absent(),
                 Value<int> levelNumber = const Value.absent(),
                 Value<bool> isCompleted = const Value.absent(),
                 Value<int> score = const Value.absent(),
@@ -3261,7 +4101,7 @@ class $$GameLevelsTableTableManager
                 Value<DateTime?> lastPlayed = const Value.absent(),
               }) => GameLevelsCompanion(
                 id: id,
-                lessonId: lessonId,
+                gameTypeId: gameTypeId,
                 levelNumber: levelNumber,
                 isCompleted: isCompleted,
                 score: score,
@@ -3271,7 +4111,7 @@ class $$GameLevelsTableTableManager
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
-                required int lessonId,
+                required int gameTypeId,
                 Value<int> levelNumber = const Value.absent(),
                 Value<bool> isCompleted = const Value.absent(),
                 Value<int> score = const Value.absent(),
@@ -3279,7 +4119,7 @@ class $$GameLevelsTableTableManager
                 Value<DateTime?> lastPlayed = const Value.absent(),
               }) => GameLevelsCompanion.insert(
                 id: id,
-                lessonId: lessonId,
+                gameTypeId: gameTypeId,
                 levelNumber: levelNumber,
                 isCompleted: isCompleted,
                 score: score,
@@ -3294,7 +4134,7 @@ class $$GameLevelsTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({lessonId = false}) {
+          prefetchHooksCallback: ({gameTypeId = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
@@ -3314,15 +4154,15 @@ class $$GameLevelsTableTableManager
                       dynamic
                     >
                   >(state) {
-                    if (lessonId) {
+                    if (gameTypeId) {
                       state =
                           state.withJoin(
                                 currentTable: table,
-                                currentColumn: table.lessonId,
+                                currentColumn: table.gameTypeId,
                                 referencedTable: $$GameLevelsTableReferences
-                                    ._lessonIdTable(db),
+                                    ._gameTypeIdTable(db),
                                 referencedColumn: $$GameLevelsTableReferences
-                                    ._lessonIdTable(db)
+                                    ._gameTypeIdTable(db)
                                     .id,
                               )
                               as T;
@@ -3351,7 +4191,7 @@ typedef $$GameLevelsTableProcessedTableManager =
       $$GameLevelsTableUpdateCompanionBuilder,
       (GameLevel, $$GameLevelsTableReferences),
       GameLevel,
-      PrefetchHooks Function({bool lessonId})
+      PrefetchHooks Function({bool gameTypeId})
     >;
 typedef $$WordsTableCreateCompanionBuilder =
     WordsCompanion Function({
@@ -3811,6 +4651,8 @@ class $AppDatabaseManager {
       $$UsersTableTableManager(_db, _db.users);
   $$LessonsTableTableManager get lessons =>
       $$LessonsTableTableManager(_db, _db.lessons);
+  $$GameTypesTableTableManager get gameTypes =>
+      $$GameTypesTableTableManager(_db, _db.gameTypes);
   $$GameLevelsTableTableManager get gameLevels =>
       $$GameLevelsTableTableManager(_db, _db.gameLevels);
   $$WordsTableTableManager get words =>

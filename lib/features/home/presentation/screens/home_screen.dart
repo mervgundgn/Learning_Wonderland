@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:learning_wonderland/config/router/app_router.dart';
 import 'package:learning_wonderland/config/theme/app_colors.dart';
 import 'package:learning_wonderland/config/theme/app_text_styles.dart';
 import 'package:learning_wonderland/features/home/data/datasources/home_local_datasource.dart';
@@ -7,7 +9,7 @@ import 'package:learning_wonderland/features/home/data/repositories/home_reposit
 import 'package:learning_wonderland/features/home/domain/bloc/home_bloc.dart';
 import 'package:learning_wonderland/features/home/domain/bloc/home_event.dart';
 import 'package:learning_wonderland/features/home/domain/bloc/home_state.dart';
-import 'package:learning_wonderland/data/local/app_database.dart'; // Lesson modeli için gerekli
+import 'package:learning_wonderland/data/local/app_database.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -32,17 +34,17 @@ class HomeScreen extends StatelessWidget {
             );
           } else if (state is HomeLoaded) {
             final List<Offset> relativePositions = [
-              const Offset(0.20, 0.25), // HelloKitty - Harfleri Tanıyalım (Sol üstte, başlığın altı)
-              const Offset(0.65, 0.40), // Cinnamoroll - Kelime Avı (Sağ ortada)
-              const Offset(0.30, 0.60), // Kuromi - Cümle Kurma (Sol alt ortada)
-              const Offset(0.80, 0.68), // MyMelody - dy değeri 0.70'ten 0.68'e düşürüldü
-              const Offset(0.45, 0.83), // Pompompurin - dy değeri 0.85'ten 0.83'e düşürüldü
+              const Offset(0.20, 0.25),
+              const Offset(0.65, 0.40),
+              const Offset(0.30, 0.60),
+              const Offset(0.80, 0.68),
+              const Offset(0.45, 0.83),
             ];
 
             return Scaffold(
               appBar: AppBar(
                 title: Text(
-                  "Harikalar Diyarı Haritası", // Mevcut AppBar başlığı korunuyor
+                  "Harikalar Diyarı Haritası",
                   style: AppTextStyles.bubblegumSansSubtitleStyle.copyWith(color: Colors.white),
                 ),
               ),
@@ -51,9 +53,8 @@ class HomeScreen extends StatelessWidget {
                   final double stackWidth = constraints.maxWidth;
                   final double stackHeight = constraints.maxHeight;
 
-                  // Modül kutucuklarının sabit boyutları - Overflow hatasını gidermek için inceltildi
                   final double moduleWidth = 120.0;
-                  final double moduleHeight = 140.0; // 💡 135.0'dan 140.0'e artırıldı
+                  final double moduleHeight = 140.0;
 
                   return Stack(
                     children: [
@@ -87,7 +88,10 @@ class HomeScreen extends StatelessWidget {
                             onTap: isLocked
                                 ? null
                                 : () {
-                              print("Modül Tıklandı: ${module.title}");
+                              GoRouter.of(context).goNamed(
+                                AppRouteName.lessonDetail,
+                                extra: module,
+                              );
                             },
                             child: Container(
                               width: moduleWidth,
@@ -121,7 +125,7 @@ class HomeScreen extends StatelessWidget {
                                       color: AppColors.white,
                                       size: 24,
                                     ),
-                                  const SizedBox(height: 2), // 💡 4'ten 2'ye düşürüldü
+                                  const SizedBox(height: 2),
                                   Text(
                                     module.title,
                                     style: textStyle,
@@ -149,7 +153,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             );
-          }
+          } // 💡 Buradaki eksik kapanış parantezi düzeltildi
           return const SizedBox.shrink();
         },
       ),

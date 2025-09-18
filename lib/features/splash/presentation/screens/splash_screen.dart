@@ -1,8 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:learning_wonderland/config/router/app_router.dart';
+import 'package:learning_wonderland/config/router/app_router.dart'; // AppRouter için doğru import
 import 'package:learning_wonderland/config/theme/app_colors.dart';
 import 'package:learning_wonderland/config/theme/app_text_styles.dart';
 
