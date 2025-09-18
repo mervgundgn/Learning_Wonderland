@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+// AppRouteName sınıfını kullanmak için bu import gereklidir!
 import 'package:learning_wonderland/config/router/app_router.dart';
 import 'package:learning_wonderland/config/theme/app_colors.dart';
 import 'package:learning_wonderland/config/theme/app_text_styles.dart';
@@ -88,8 +89,11 @@ class GameLevelsScreen extends StatelessWidget {
                         return GestureDetector(
                           onTap: () {
                             GoRouter.of(context).goNamed(
-                              AppRouteName.game,
-                              extra: gameLevel,
+                              AppRouteName.game, // AppRouteName doğru şekilde kullanıldı
+                              extra: {
+                                'gameLevel': gameLevel,
+                                'gameType': gameType,
+                              },
                             );
                           },
                           child: Card(

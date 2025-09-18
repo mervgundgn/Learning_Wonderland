@@ -2,9 +2,10 @@ import 'package:go_router/go_router.dart';
 import 'package:learning_wonderland/features/home/presentation/screens/home_screen.dart';
 import 'package:learning_wonderland/features/splash/presentation/screens/splash_screen.dart';
 import 'package:learning_wonderland/features/lesson_detail/presentation/screens/lesson_detail_screen.dart';
-import 'package:learning_wonderland/data/local/app_database.dart'; // Lesson, GameType, GameLevel modelleri için
+import 'package:learning_wonderland/data/local/app_database.dart';
 import 'package:learning_wonderland/features/game_levels/presentation/screens/game_levels_screen.dart';
-import 'package:learning_wonderland/features/game/presentation/screens/game_screen.dart'; // GameScreen için doğru import
+import 'package:learning_wonderland/features/game/presentation/screens/game_screen.dart';
+import 'package:learning_wonderland/features/app_settings/presentation/screens/settings_screen.dart';
 
 class AppRouteName {
   static const splash = 'splash';
@@ -12,6 +13,7 @@ class AppRouteName {
   static const lessonDetail = 'lessonDetail';
   static const gameLevels = 'gameLevels';
   static const game = 'game';
+  static const settings = 'settings'; // Yeni sabit eklendi
 }
 
 class AppRouter {
@@ -48,9 +50,16 @@ class AppRouter {
         path: '/game',
         name: AppRouteName.game,
         builder: (context, state) {
-          final gameLevel = state.extra as GameLevel;
-          return GameScreen(gameLevel: gameLevel);
+          final Map<String, dynamic> extras = state.extra as Map<String, dynamic>;
+          final GameLevel gameLevel = extras['gameLevel'] as GameLevel;
+          final GameType gameType = extras['gameType'] as GameType;
+          return GameScreen(gameLevel: gameLevel, gameType: gameType);
         },
+      ),
+      GoRoute(
+        path: '/settings',
+        name: AppRouteName.settings,
+        builder: (context, state) => const SettingsScreen(), // Yeni route eklendi
       ),
     ],
   );

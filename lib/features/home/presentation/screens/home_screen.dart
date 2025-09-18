@@ -47,6 +47,14 @@ class HomeScreen extends StatelessWidget {
                   "Harikalar Diyarı Haritası",
                   style: AppTextStyles.bubblegumSansSubtitleStyle.copyWith(color: Colors.white),
                 ),
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.settings, color: AppColors.white),
+                    onPressed: () {
+                      GoRouter.of(context).goNamed(AppRouteName.settings);
+                    },
+                  ),
+                ],
               ),
               body: LayoutBuilder(
                 builder: (context, constraints) {
@@ -74,7 +82,9 @@ class HomeScreen extends StatelessWidget {
                         final double actualTop = (relativePos.dy * stackHeight) - (moduleHeight / 2);
 
                         final bool isLocked = !module.isUnlocked;
-                        final Color containerColor = isLocked ? AppColors.darkGrey.withOpacity(0.5) : Colors.white.withOpacity(0.8);
+                        final Color containerColor = isLocked
+                            ? AppColors.darkGrey.withOpacity(0.5)
+                            : Colors.white.withOpacity(0.8);
                         final TextStyle textStyle = isLocked
                             ? AppTextStyles.notoSansHighlightStyle.copyWith(color: AppColors.darkGrey.withOpacity(0.7))
                             : AppTextStyles.notoSansHighlightStyle;
@@ -153,7 +163,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             );
-          } // 💡 Buradaki eksik kapanış parantezi düzeltildi
+          }
           return const SizedBox.shrink();
         },
       ),
